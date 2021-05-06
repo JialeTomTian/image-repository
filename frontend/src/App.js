@@ -9,7 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
-import Upload from "./components/upload"
+import Upload from "./components/upload";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createMuiTheme({
 
 function App() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {loginWithRedirect, isAuthenticated} = useAuth0();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,6 +37,11 @@ function App() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogin = () => {
+    loginWithRedirect();
+    handleClose();
+  }
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -62,7 +69,8 @@ function App() {
             >
               <a href="/" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Home</MenuItem></a>
               <a href="/pictures" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Pictures</MenuItem></a>
-              <a href="/upload" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Upload</MenuItem></a>
+              {isAuthenticated ? (<a href="/upload" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Upload</MenuItem></a>) :
+               (<MenuItem onClick={handleLogin} >Login</MenuItem>)}
             </Menu>
           </div>
         </AppBar>

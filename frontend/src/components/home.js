@@ -4,6 +4,7 @@ import { CssBaseline } from "@material-ui/core";
 import Background from "../assets/home.png";
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let Home = () => {
+  
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -34,11 +38,17 @@ let Home = () => {
           View Pictures
         </Button>
         &nbsp;&nbsp;&nbsp;
-        <a href="/upload" style={{textDecoration: "none"}}>
-        <Button variant="contained" color="primary" size="large">
-          Upload Picture
-        </Button>
-        </a>
+        
+        {!isAuthenticated ? <Button onClick={()=> loginWithRedirect()} variant="contained" color="primary" size="large">
+          Log In
+        </Button>: (
+          <a href="/upload" style={{textDecoration: "none"}}>
+          <Button variant="contained" color="primary" size="large">
+            Upload Picture
+          </Button>
+          </a>
+        )}
+        
         </div>
       </div>
     </div>
