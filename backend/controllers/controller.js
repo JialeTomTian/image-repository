@@ -8,6 +8,7 @@ dotenv.config();
 exports.getPictures = async (req, res) => {
   try {
     let results = await imageModel.find();
+    console.log(results);
     res.json({
       success: true,
       images: results
@@ -23,7 +24,8 @@ exports.getPictures = async (req, res) => {
 
 exports.filterPictures = async(req, res) => {
   try{
-    let results = await imageModel.find({descriptors: req.body.filters});
+    console.log(req.body.filter);
+    let results = await imageModel.find({descriptors: {$all : req.body.filter}});
     res.json({
       success: true,
       images: results

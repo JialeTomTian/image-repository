@@ -12,6 +12,11 @@ import Button from "@material-ui/core/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import uploadFireBase from "../utilities/firebase";
 import { uploadPicture } from "../utilities/utilities";
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const baseStyle = {
   flex: 1,
@@ -106,6 +111,8 @@ const DropImage = ({ images, handleForm }) => {
 
 const Upload = () => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [during, setDuring] = React.useState(false);
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const getAccessToken = async () => {
     try {
@@ -113,7 +120,7 @@ const Upload = () => {
         audience: `https://image-repository/api`,
         scope: "read:current_user",
       });
-      console.log(accessToken);
+      return accessToken;
     } catch (err) {
       console.log(err);
     }
@@ -130,6 +137,7 @@ const Upload = () => {
 
   const handleSubmit = async (event) => {
     try {
+      setDuring(true);
       let accessToken = await getAccessToken();
       let imageURL = [];
       for (let image of images) {
@@ -146,14 +154,37 @@ const Upload = () => {
         image: imageURL,
         user: user.name,
       };
-      await uploadPicture(obj);
+      await uploadPicture(obj, accessToken);
+      setOpen(true);
+      setDuring(false);
       event.preventDefault();
+      setImages([]);
     } catch {
       console.log("an error has occured");
     }
   };
   if (isAuthenticated) {
     return (
+      <React.Fragment>
+       <Collapse in={open}>
+        <Alert
+          severity="success"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          Image Successfully Uploaded
+        </Alert>
+      </Collapse>
       <div className={classes.root}>
         <CssBaseline />
         <center>
@@ -186,11 +217,13 @@ const Upload = () => {
                 >
                   Upload Picture
                 </Button>
+                {during && <CircularProgress />}
               </form>
             </CardContent>
           </Card>
         </center>
       </div>
+      </React.Fragment>
     );
   } else {
     return (

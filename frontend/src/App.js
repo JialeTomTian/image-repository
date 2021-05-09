@@ -1,6 +1,6 @@
 import Home from "./components/home";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route , Link} from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
 import Upload from "./components/upload";
 import { useAuth0 } from "@auth0/auth0-react";
+import Image from "./components/image";
 
 const theme = createMuiTheme({
   palette: {
@@ -67,14 +68,17 @@ function App() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <a href="/" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Home</MenuItem></a>
-              <a href="/pictures" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Pictures</MenuItem></a>
-              {isAuthenticated ? (<a href="/upload" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Upload</MenuItem></a>) :
+              <Link to="/" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Home</MenuItem></Link>
+              <Link to="/image" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Pictures</MenuItem></Link>
+              {isAuthenticated ? (<Link to="/upload" style={{textDecoration: "none"}}><MenuItem onClick={handleClose}>Upload</MenuItem></Link>) :
                (<MenuItem onClick={handleLogin} >Login</MenuItem>)}
             </Menu>
           </div>
         </AppBar>
       <Switch>
+        <Route path='/image'>
+          <Image/>
+        </Route>
         <Route path="/upload">
           <Upload/>
           </Route>

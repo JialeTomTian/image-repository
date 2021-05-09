@@ -3,9 +3,10 @@ import "@firebase/storage";
 import axios from "axios";
 
 const uploadFireBase = async (accessToken, blobUrl, name) => {
+  console.log(accessToken);
   const firebaseConfig = await axios.get("api/private/getUploadURL", {
     headers: {
-      Authorization: `token ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
