@@ -143,6 +143,11 @@ const Image = () => {
 
   const fetchData = async () => {
     let accessToken = await getAccessToken();
+    if(filter[0] === ""){
+      let result = await getPicture();
+      setData(result.data.images);
+      return;
+    }
     console.log(accessToken)
     let result = await searchPicture({ filter: filter }, accessToken);
     console.log(result);
@@ -152,6 +157,10 @@ const Image = () => {
   const processData = (event) => {
     let input = event.target.value.replace(/\s/g, '');
     let result = input.split(",");
+    for(let counter = 0; counter < result.length; counter++){
+      let tempResult = result[counter].charAt(0).toUpperCase() + result[counter].slice(1).toLowerCase();
+      result[counter] = tempResult;
+    }
     setFilter(result);
 
   };
@@ -194,6 +203,11 @@ const Image = () => {
           {data.map((data, index) => {
             return <DisplayImage data={data} index={index}></DisplayImage>;
           })}
+          {data.length === 0 && (
+            <Typography>
+              No Results Found
+            </Typography>
+          )}
         </div>
       </CssBaseline>
     </div>

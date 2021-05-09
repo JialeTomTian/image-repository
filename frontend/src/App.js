@@ -49,12 +49,14 @@ function App() {
         <AppBar position="sticky" color="primary">
           <div>
             <div style={{ float: "left", marginLeft: "1%" }}>
+              <Link to="/" style={{textDecoration: "none"}}>
               <Typography
                 variant="h5"
                 style={{ marginTop: "10%", color: "#004E64"}}
               >
                 Pet Moments
               </Typography>
+              </Link>
             </div>
             <div style={{ float: "right", marginRight: "1%" }}>
               <IconButton color="default" onClick={handleClick}>

@@ -8,7 +8,6 @@ dotenv.config();
 exports.getPictures = async (req, res) => {
   try {
     let results = await imageModel.find();
-    console.log(results);
     res.json({
       success: true,
       images: results
@@ -24,7 +23,6 @@ exports.getPictures = async (req, res) => {
 
 exports.filterPictures = async(req, res) => {
   try{
-    console.log(req.body.filter);
     let results = await imageModel.find({descriptors: {$all : req.body.filter}});
     res.json({
       success: true,
@@ -45,12 +43,8 @@ exports.uploadPictures = async (req, res) => {
     const client = new vision.ImageAnnotatorClient({
       keyFileName: `${process.env.GOOGLE_APPLICATION_CREDENTIALS}`,
     });
-    console.log(req.body);
-    console.log(animals);
     for(let url of req.body.image){
-      console.log(url)
       const [result] = await client.labelDetection(url);
-      console.log(result);
       for(let item of result.labelAnnotations){
         if (animals.includes(item.description) && !descriptors.includes(item.description)){
           descriptors.push(item.description);
@@ -88,3 +82,13 @@ exports.getUploadURL = (req, res) => {
     res.send(err);
   }
 };
+
+exports.deletePictures = async (req, res) => {
+  try{
+    let result = await imageModel.deleteOne({name : req.body.name});
+    res.send({success: true})
+  } catch(err) {
+    console.log(err);
+    res.send(err);
+  }
+}

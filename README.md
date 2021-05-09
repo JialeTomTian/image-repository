@@ -1,20 +1,32 @@
-# image-repository
+# Image-Repository
 ## This is the submission for the Shopify Developer Challenge
-Pet Moments is a platform for pet owner to share their favorite pet moments with the rest of the world
+Pet Moments is an image-repository platform for pet owner to share their favorite pet moments with the rest of the world
 Technologies Used for This Project: React (with MaterialUI), Node, Express, MongoDB, Firebase, Google Cloud Vision, Auth0, Heroku (Deployment)
 
 ## Implementation Highlights
-- Enable ability for user to upload single and multiple picture
+- Enable ability for user to upload single and multiple pictures
 - Pictures stored in on external Firebase storage with user data and image URL stored on MongoDB 
 - Secured Backend API with Auth0 and JWT for necessary endpoints
 - Secured frontend user facing platform with Auth0
 - Used Google Vision API to detect specific animal labels for images uploaded
 - Allows user to specifically search for pictures based on animal labels 
-- Created Test Cases To Test Backend Endpoints
+- Created Test Cases To Test Backend Endpoints Using Mocha and Chai
+- Added endpoint for deleting images(currently only used for testing)
 
-## Demo
+## Project Demo
 Since credentials were used and secured with .env files, the website is deployed on Heroku for demo
-Demo URL: https://image-repository-deploy.herokuapp.com/image
+Demo URL: https://image-repository-deploy.herokuapp.com
+
+## Project Testing
+In order to ensure that backend APIs are working as intended, a series of tests are conducted. These include negative cases where no authentication is provided for the endpoints. The test cases use Mocha and Chai.
+
+Running the Tests:
+```
+cd ./backend && npm test
+```
+
+## Test Demo
+For the tests, we have included a folder and test cases that pings the endpoint deployed on Heroku. These test cases uses Mocha/Chai and verify the backend endpoints.
 
 ## Implementation Details
 Front end: The front end is made using React and Material UI. MaterialUI is used for the convinence to create components in a timely manner. Auth0 is also used on the frontend to allow user login. The features of Auth0 is used throughout the frontend in checking logging, getting tokens, and fetching user information.
@@ -25,3 +37,10 @@ with the username, image name and the URLs for the images which is then uploaded
 
 Backend Vision Label: In order to provide labels, when we upload the URL for the image to the backend to be stored in MongoDB, the URLs are passed to Google Vision API for label detection. Then after the labels are found, we parse through the data and fetch all the labels that contains animal names and stored that data along side the image data
 to MongoDB. This way, when we search for a specific picture on the frontend in the future, we can easily search for the picture depending on the approriate label
+
+## Future Implementation Additions
+These are some additional features I want to include in the future for this project
+- Deleting pictures based on user authentication/have a page for user to see their posts
+- Improve frontend styling
+- Add additional fields for the image upload submission such as a field for description
+

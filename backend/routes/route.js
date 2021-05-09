@@ -14,4 +14,7 @@ router.post('/api/private/uploadResult', controller.uploadPictures);
 
 router.post('/api/private/searchPictures', controller.filterPictures);
 
+//Used only for testing currently
+router.post('/api/private/deletePictures', controller.deletePictures);
+
 module.exports = router;
