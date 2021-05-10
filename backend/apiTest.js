@@ -2,7 +2,7 @@ const { assert, expect } = require('chai');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-let baseURL = "http://localhost:5000/api";
+let baseURL = "https://image-repository-deploy.herokuapp.com/api";
 //Image URL used for upload tests
 let imageURL = "https://firebasestorage.googleapis.com/v0/b/image-repository-75e51.appspot.com/o/IMG_20201212_225351_821.jpg_1620536345577?alt=media&token=7db92f6d-fdf8-4ec2-bc6a-ed3a1ea25d01";
 let testName = `test_${Date.now()}`
@@ -29,7 +29,7 @@ describe("Getting Public Image Data", ()=>{
             assert.typeOf(res.body.images, 'array');
             done()
         })
-    })
+    }).timeout(150000);
 
     it("Ensuring Request Format Is Correct", (done)=>{
         chai.request(baseURL)
@@ -45,7 +45,7 @@ describe("Getting Public Image Data", ()=>{
             }
             done()
         })
-    })
+    }).timeout(150000);
 })
 
 //Negative Cases for Failure Endpoints
@@ -54,11 +54,10 @@ describe("Negative Case: Unauthorized Endpoints", ()=>{
         chai.request(baseURL)
         .get("/private/getUploadURL")
         .end((err, res)=>{
-            console.log(err);
             res.should.have.status(401);
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Negative uploadResult", (done)=>{
         chai.request(baseURL)
@@ -67,7 +66,7 @@ describe("Negative Case: Unauthorized Endpoints", ()=>{
             res.should.have.status(401);
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Negative searchPictures", (done)=>{
         chai.request(baseURL)
@@ -76,7 +75,7 @@ describe("Negative Case: Unauthorized Endpoints", ()=>{
             res.should.have.status(401);
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Negative deletePictures", (done)=>{
         chai.request(baseURL)
@@ -85,7 +84,7 @@ describe("Negative Case: Unauthorized Endpoints", ()=>{
             res.should.have.status(401);
             done();
         })
-    })
+    }).timeout(150000);
 })
 
 describe("Test Authenticaiton", ()=>{
@@ -100,11 +99,12 @@ describe("Test Authenticaiton", ()=>{
             assert(res.body.token_type === 'Bearer');
             done();
         })
-    })
+    }).timeout(150000);
 })
 
 describe("Endpoints With Valid Authentication", ()=>{
     before(function(done){
+        this.timeout(50000);
         chai.request(options.url)
         .post("")
         .set('Content-Type', 'application/json')
@@ -133,7 +133,7 @@ describe("Endpoints With Valid Authentication", ()=>{
             }
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Test Upload Picture", (done)=>{
         chai.request(baseURL)
@@ -146,7 +146,7 @@ describe("Endpoints With Valid Authentication", ()=>{
             assert(res.body.success === true);
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Delete Picure Uploaded", (done)=>{
         chai.request(baseURL)
@@ -159,7 +159,7 @@ describe("Endpoints With Valid Authentication", ()=>{
             assert(res.body.success === true);
             done();
         })
-    })
+    }).timeout(150000);
 
     it("Get Upload URL", (done)=>{
         chai.request(baseURL)
@@ -170,5 +170,5 @@ describe("Endpoints With Valid Authentication", ()=>{
             res.body.should.be.a('object');
             done();
         })
-    })
+    }).timeout(150000);
 })
